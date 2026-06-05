@@ -1,164 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>modthirst - Secure Link Shortener</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        /* Custom Green Theme Styles */
-        body { background-color: #052e16; color: #f0fdf4; }
-        .btn-green { background-color: #16a34a; color: white; transition: all 0.3s; }
-        .btn-green:hover { background-color: #15803d; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>modthirst - Ultimate Gaming Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght=500;700;900&family=Rajdhani:wght=500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root {
+    --bg:#020617; --card:#0f172a; --blue:#22c55e; --cyan:#4ade80;
+    --border:rgba(34,197,94,0.2); --text:#caf1de; --white:#ffffff; --green:#16a34a;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'Rajdhani', sans-serif; line-height:1.9; }
+  
+  header { background:rgba(2,6,23,0.98); border-bottom:1px solid var(--border); padding:20px; text-align:center; position:sticky; top:0; z-index:100; backdrop-filter:blur(10px); }
+  .logo { font-family:'Orbitron'; font-weight:900; color:var(--white); font-size:1.4rem; letter-spacing:1px; text-transform: uppercase; }
+  .logo span { color:var(--blue); }
+
+  .wrapper { max-width:850px; margin:0 auto; padding:40px 20px; }
+  .article-title { font-family:'Orbitron'; font-size:2.2rem; color:var(--white); margin-bottom:10px; font-weight:900; text-transform:uppercase; line-height:1.3; text-shadow:0 0 20px rgba(34,197,94,0.15); }
+  .meta-info { font-family:'Share Tech Mono'; color:var(--blue); font-size:0.9rem; margin-bottom:25px; display:block; letter-spacing:1px; }
+  
+  .system-box { background:var(--card); border:1px solid var(--border); padding:25px; border-radius:6px; margin:25px 0; text-align:center; box-shadow:0 0 30px rgba(0,0,0,0.5); }
+  .timer-label { font-family:'Share Tech Mono'; color:var(--blue); font-size:1.1rem; margin-bottom:8px; }
+  .counter { font-family:'Orbitron'; font-size:2.8rem; font-weight:700; color:var(--cyan); display:block; }
+  
+  .trigger-btn { background:var(--blue); color:#000; font-family:'Orbitron'; font-weight:900; font-size:1.05rem; padding:15px 35px; border:none; border-radius:4px; cursor:pointer; text-transform:uppercase; display:inline-block; width:100%; max-width:350px; letter-spacing:1px; box-shadow:0 0 15px rgba(34,197,94,0.2); transition:0.2s; }
+  .trigger-btn:hover { background:var(--cyan); }
+
+  /* Ad slot wrapper - Clean Space For Ads */
+  .ad-slot { margin:40px 0; display:flex; flex-direction:column; align-items:center; justify-content:center; flex-wrap:wrap; gap:10px; border: 1px dashed rgba(34,197,94,0.15); padding: 15px; border-radius: 6px; }
+
+  .article-body h2 { font-family:'Orbitron'; color:var(--white); font-size:1.5rem; margin:45px 0 20px 0; border-left:4px solid var(--blue); padding-left:12px; text-transform:uppercase; }
+  .article-body h3 { font-family:'Orbitron'; color:var(--cyan); font-size:1.2rem; margin:30px 0 15px 0; }
+  .article-body p { margin-bottom:22px; font-size:1.1rem; text-align:justify; color:#caf1de; }
+  .article-body ul { margin-left:25px; margin-bottom:25px; color:#caf1de; }
+  .article-body li { margin-bottom:10px; font-size:1.05rem; }
+
+  #footerTerminal { min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; border-top:2px dashed var(--border); background:rgba(34,197,94,0.01); padding:40px 20px; }
+</style>
 </head>
-<body class="font-sans min-h-screen flex flex-col justify-between">
+<body>
 
-    <header class="p-5 bg-[#111827] border-b border-[#16a34a] text-center text-2xl font-bold tracking-wider text-[#16a34a]">
-        modthirst
-    </header>
+<header>
+  <div class="logo">modthirst<span> Network</span></div>
+</header>
 
-    <main class="max-w-4xl mx-auto p-6 mt-10 bg-[#0f172a] rounded-xl shadow-2xl border border-emerald-900 w-full text-center">
-        <h2 class="text-xl font-semibold mb-4">Your Link is Ready Below</h2>
-        
-        <div class="my-4 p-4 border border-dashed border-gray-600 text-gray-400 text-sm">
-            ADVERTISEMENT
-        </div>
-        <button id="step1Btn" class="btn-green px-8 py-3 rounded-lg font-bold text-lg shadow-lg">
-            Get Link
-        </button>
+<div class="wrapper">
+  <h1 class="article-title">PUBG Mobile vs Free Fire: The Ultimate Deep Analysis & Comparison Report</h1>
+  <span class="meta-info" id="dynamicTitleBadge">Connecting to secure cloud node...</span>
+  
+  <div class="system-box" id="topControlBox">
+    <button class="trigger-btn" id="getMasterBtn" onclick="startTopTimer()">Get Link</button>
+    
+    <div id="topTimerDisplay" style="display:none;">
+      <p class="timer-label">Checking security credentials & initializing assets...</p>
+      <span class="counter" id="topClock">20</span>
+    </div>
+    
+    <button class="trigger-btn" id="downloadNowBtn" style="display:none; background:var(--green);" onclick="triggerSlowScroll()">Download Now</button>
+  </div>
 
-        <div id="timer1Container" class="hidden mt-6">
-            <p class="text-lg">Please wait <span id="countdown1" class="font-bold text-emerald-400 text-xl">20</span> seconds...</p>
-            <button id="downloadNowBtn" class="btn-green px-8 py-3 rounded-lg font-bold text-lg mt-4 hidden opacity-50 cursor-not-allowed" disabled>
-                Download Now
-            </button>
-        </div>
+  <!-- TOP AD SLOT CONTAINER -->
+  <div class="ad-slot">
+      <!-- [PASTE YOUR TOP ADS SCRIPT/IFRAME CODE HERE LATER] -->
+      <span style="font-family:'Share Tech Mono'; color:rgba(34,197,94,0.4); font-size:0.8rem;">ADVERTISEMENT MODULE PLACEHOLDER</span>
+  </div>
 
-        <section class="mt-12 text-left bg-[#052e16]/50 p-6 rounded-lg max-h-[400px] overflow-y-auto border border-emerald-800 text-gray-300">
-            <h3 class="text-xl font-bold text-[#16a34a] mb-4">modthirst Premium Resource Hub & Documentation</h3>
-            <p class="mb-4 font-semibold">Welcome to modthirst. Below is the comprehensive guide. Please scroll down to access your final destination link.</p>
-            
-            <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat...</p>
-            <p class="mb-4">Detailed Section 1: In modern web architectures, secure file distribution requires optimized link shortening strategies. This portal ensures that every click is verified, safe from malware, and served efficiently...</p>
-            <p class="mb-4">Detailed Section 2: Building high-retention pages... (Expand this content up to 5000 words for SEO advantages)...</p>
-            <p class="mb-4">Conclusion: Thank you for waiting and supporting modthirst. Your files are checked with integrity algorithms.</p>
-        </section>
-        <div id="finalLinkSection" class="mt-8 pt-6 border-t border-emerald-950 hidden">
-            <button id="step3Btn" class="btn-green px-8 py-3 rounded-lg font-bold text-lg">
-                Get Destination Link
-            </button>
-            
-            <div id="timer2Container" class="hidden mt-4">
-                <p class="text-lg">Generating Final Destination in <span id="countdown2" class="font-bold text-emerald-400 text-xl">15</span> seconds...</p>
-                <a id="finalDestinationLink" href="#" target="_blank" class="btn-green inline-block px-8 py-3 rounded-lg font-bold text-lg mt-4 hidden bg-gradient-to-r from-green-500 to-emerald-600">
-                    Go to Destination Link
-                </a>
-            </div>
-        </div>
+  <div class="article-body">
+    <p>The mobile battle royale landscape has been dominated by two absolute titans for years: PUBG Mobile (PlayerUnknown's Battlegrounds) and Garena Free Fire. Both games have amassed hundreds of millions of downloads, generated billions of dollars in player spending, and formed deep esports ecosystems globally. However, despite belonging to the exact same genre, their execution, target audience, core graphics architecture, mechanical pacing, and operational philosophies are completely distinct. This comprehensive deep-dive comparison serves to analyze every major layer separating these tactical survival simulators to determine once and for all which option provides the definitive battle royale experience.</p>
 
-        <div class="my-6 p-4 border border-dashed border-gray-600 text-gray-400 text-sm">
-            ADVERTISEMENT
-        </div>
-        </main>
+    <h2>1. Technical Architecture and Engine Performance</h2>
+    <p>The core structural divergence between PUBG Mobile and Free Fire begins at the code level within their game engines. PUBG Mobile is built utilizing Epic Games' industry-leading Unreal Engine 4. This choice allows the development teams at Tencent and Lightspeed & Quantum to push advanced graphical boundaries, physics calculations, realistic illumination parameters, and complex particle setups. Unreal Engine 4 enables true-to-life ballistic trajectories, complex wind resistance models, dynamic light propagation, and intricate structural texturing across vast 8x8 kilometer landscapes.</p>
+    
+    <p>Conversely, Garena Free Fire leverages the Unity Engine framework. Unity is internationally praised for its extreme multi-platform stability, rapid build iteration capabilities, and lightweight runtime execution footprints. Garena strategically deployed Unity to optimize Free Fire for low-end to mid-range mobile processing chipsets. By avoiding heavy post-processing pipelines and ultra-dense draw distances, Free Fire ensures consistent 60 frames per second rendering targets on devices with minimal RAM capacities and aging system-on-chip architectures. This foundational engine optimization selection serves as the single greatest driver for Free Fire's overwhelming demographic dominance in emerging global mobile markets.</p>
 
-    <footer class="p-4 bg-[#111827] text-center text-sm text-gray-500 mt-10">
-        © 2026 modthirst. All Rights Reserved.
-    </footer>
+    <!-- CONTENT AD BLOCK 1 -->
+    <div class="ad-slot">
+      <!-- [PASTE YOUR CONTENT AD BLOCK 1 CODE HERE LATER] -->
+      <span style="font-family:'Share Tech Mono'; color:rgba(34,197,94,0.4); font-size:0.8rem;">ADVERTISEMENT MODULE PLACEHOLDER</span>
+    </div>
 
-    <script>
-        // SUPABASE CONFIGURATION PLACEHOLDERS
-        const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL_HERE"; 
-        const SUPABASE_ANON_KEY = "YOUR_SUPABASE_PUBLIC_ANON_KEY_HERE";
-        
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    <h2>2. Visual Fidelity, Graphic Rendering, and Art Direction</h2>
+    <p>When assessing visual delivery benchmarks, the aesthetic objectives of both games present a stark, unbridgeable contrast. PUBG Mobile focuses heavily on gritty military realism, environmental authenticity, and hardware-taxing rendering. The game features physically-based rendering (PBR) assets, highly responsive anti-aliasing matrices, volumetric lighting variables, and dynamic shadow generation mapping. Grass layouts render at extensive distances, giving tactical value to prone positioning. Character uniforms, plate carriers, tactical helmets, and firearm models are heavily based on actual real-world military specifications, ensuring an immersive simulation aesthetic.</p>
+    
+    <p>Free Fire rejects desaturated tactical realism in favor of a vibrant, highly stylized, arcade-driven artistic direction. The environmental design features higher-saturation color palettes, contrasting structural paint values, and heavily stylized character presets. Texture filtering profiles are deliberately kept flat to reduce memory bus strain, allowing complex skin models, neon-glowing firearm mutations, and animated fantasy outfits to run smoothly. While it lacks realistic depth processing, the extreme contrast values make enemy target acquisition significantly easier against terrain templates, altering the mechanical flow of long-range engagements.</p>
 
-        // Fetch short code from URL (e.g., modthirst.com/?id=xyz123)
-        const urlParams = new URLSearchParams(window.location.search);
-        const shortId = urlParams.get('id');
-        let destinationUrl = "https://google.com"; // Default fallback
+    <h3>Device Requirements Matrix:</h3>
+    <ul>
+      <li><strong>PUBG Mobile Minimum:</strong> 2GB RAM minimum (4GB highly recommended), Android 5.1.1+, Snapdragon 600 series or above for smooth framerates, and up to 4GB-7GB storage space depending on map packs.</li>
+      <li><strong>Free Fire Minimum:</strong> 1GB RAM minimum (2GB-3GB recommended), Android 4.1+, Snapdragon 400 series or basic MediaTek processors, with a highly optimized storage footprint of around 1.5GB to 2.5GB.</li>
+    </ul>
 
-        // Fetch original link from Supabase DB
-        async function fetchDestinationLink() {
-            if(!shortId) return;
-            let { data, error } = await supabase
-                .from('short_links')
-                .select('original_url')
-                .eq('short_id', shortId)
-                .single();
-            
-            if (data && !error) {
-                destinationUrl = data.original_url;
-            }
+    <!-- CONTENT AD BLOCK 2 -->
+    <div class="ad-slot">
+      <!-- [PASTE YOUR CONTENT AD BLOCK 2 CODE HERE LATER] -->
+      <span style="font-family:'Share Tech Mono'; color:rgba(34,197,94,0.4); font-size:0.8rem;">ADVERTISEMENT MODULE PLACEHOLDER</span>
+    </div>
+
+    <h2>3. Core Gameplay Loop, Gunplay Physics, and Match Pacing</h2>
+    <p>While the baseline macro-loop remains identical—drop from an aircraft, secure loot equipment, navigate a shrinking safe zone grid, and eliminate all threats to achieve absolute victory—the micro-mechanics produce vastly unique gameplay cadences. PUBG Mobile maps accommodate up to 100 concurrent live connections per session. The pacing is deliberately calculated, methodological, and deeply tactical. Map travel takes extensive time, and encounters require structural positioning, smoke screen deployment, and calculated flanking patterns. The gunplay features intricate recoil pattern parameters, bullet velocity drop-offs, and weapon-specific damage multipliers that force players to master firing discipline over automated mechanics.</p>
+    
+    <p>Free Fire accelerates this operational tempo exponentially. Dropping down onto smaller spatial map zones with only 50 players per instance, match timers are compressed down to a swift 10-12 minutes compared to PUBG Mobile's 30-35 minute matches. Gunplay features a powerful, built-in standard Aim-Assist matrix that locks onto opposing player centers instantly when aiming down sights. This shifts the mechanical skill ceiling away from recoil adjustment control over to reflex-driven macro movements, close-quarters jump-shots, and structural barrier creation positioning speed.</p>
+
+    <h2>4. The Gloo Wall Variable vs Tactical Realism</h2>
+    <p>The single most defining proprietary gameplay mechanic inside Free Fire is the inclusion of "Gloo Walls." At any point during live tracking combat, a player can instant-deploy a massive, indestructible ice barrier directly in front of their vector coordinates to generate artificial cover in open terrain. This completely changes defensive strategies. If caught out in an open field in Free Fire, defensive reaction times and high-speed Gloo Wall layering can entirely save an exposed squad from a disadvantageous position.</p>
+
+    <!-- MIDDLE LARGE AD SLOT -->
+    <div class="ad-slot">
+      <!-- [PASTE YOUR MIDDLE/VERTICAL ADS CODE HERE LATER] -->
+      <span style="font-family:'Share Tech Mono'; color:rgba(34,197,94,0.4); font-size:0.8rem;">MIDDLE ADVERTISEMENT MODULE PLACEHOLDER</span>
+    </div>
+
+    <p>PUBG Mobile features no such dynamic fantasy cover mechanisms. If you are caught rotating through an open wheat field without hard structural objects or natural undulating terrain dips, your survival relies strictly on smoke grenade walls, vehicular shielding strategies, or superior counter-firing precision. This lack of instant cover mechanics emphasizes macro-level positioning awareness, map navigation routes, and pre-emptive rotational planning over reactive reflex actions, cementing its reputation as a true hardcore simulation style battle royale.</p>
+
+    <h2>5. Character System Mechanics and Pay-To-Win Integrity</h2>
+    <p>Another monumental point of division rests within system progression mechanics and competitive structural integrity. PUBG Mobile treats character models as purely cosmetic templates. Whether playing as standard defaults or unique premium characters, every player possesses identical base movement speeds, health parameters, jumping physics, and structural hitboxes. This ensures a strictly level, completely skill-based competitive arena where real-time accuracy and game sense serve as the absolute deciders of victory.</p>
+    
+    <p>Free Fire alters this landscape by utilizing an extensive, highly intricate Character Skill System. Every character unlocked possesses a distinct, game-altering active or passive ability. Characters like Alok generate constant localized healing auras and acceleration boosts, while characters like Chrono build dome-shaped forcefields that absorb hundreds of points of kinetic damage. Players can link up to four distinct character skills simultaneously, forming tailored character builds. While this creates a deeply engaging strategy layer, it introduces heavy monetization disparities, as premium upgraded character builds and elite stat-boosting weapon skins can provide clear stat advantages over free-to-play participants.</p>
+
+    <!-- PRE-FOOTER STRIP AD -->
+    <div class="ad-slot">
+      <!-- [PASTE YOUR PRE-FOOTER STRIP AD CODE HERE LATER] -->
+      <span style="font-family:'Share Tech Mono'; color:rgba(34,197,94,0.4); font-size:0.8rem;">PRE-FOOTER ADVERTISEMENT MODULE PLACEHOLDER</span>
+    </div>
+
+    <h2>6. Map Diversity, Scale, and Strategic Layout Configurations</h2>
+    <p>The structural scale of available playing arenas heavily reflects the overarching design intentions of both development pipelines. PUBG Mobile boasts legendary battlegrounds like Erangel, Miramar, Sanhok, Vikendi, and Livik. Miramar alone spans an staggering 8x8 kilometer desert layout, filled with hundreds of thousands of unique geometry assets, complexes, and high-ground mountain nests. These vast geographic scale variables demand proper vehicular management, navigation planning, and deep situational understanding of compound defense options.</p>
+    
+    <p>Free Fire concentrates its fast combat inside tighter layouts such as Bermuda, Purgatory, Kalahari, and Alpine. These zones are intentionally engineered to minimize dead space, ensure constant player friction, and accelerate combat interactions. There are no expansive multi-kilometer stretches of barren terrain; structural configurations are tightly grouped together, pushing players to engage within short to mid-range distances almost immediately upon landing. This keeps the action constant and eliminates the slow mid-game lull frequently experienced during large-scale PUBG matches.</p>
+
+    <h2>7. Final Verdict: Which Title Deserves the Throne?</h2>
+    <p>Ultimately, choosing the superior platform comes down to checking personal hardware constraints and preferred tactical pacing priorities. PUBG Mobile stands tall as an unrivaled masterpiece of mobile graphical engineering, high-fidelity tactical simulations, realistic gunplay mechanics, and uncompromising competitive integrity. It is designed for players who crave intense, calculated tactical squad coordination and realistic simulation standards on modern mid-to-high tier hardware platforms.</p>
+    
+    <p>Free Fire emerges as the supreme king of high-speed arcade efficiency, optimization accessibility, dynamic hero-shooter ability strategies, and lightning-fast action pacing. It delivers absolute battle royale gratification to hundreds of millions of users worldwide who operate on budget-friendly mobile hardware configurations. Both titles continue to rule their respective spaces flawlessly, redefining what mobile multiplayer survival games can achieve in the modern digital era. Proceed directly to our terminal base framework down below to process your destination data routing verification packages safely.</p>
+    
+    <!-- NOTE: [To scale up to 5000+ words seamlessly for extreme SEO indexing benefits, you can add further technical sub-paragraphs directly here inside this body tag] -->
+  </div>
+</div>
+
+<div id="footerTerminal">
+  <!-- BOTTOM HORIZONTAL AD -->
+  <div class="ad-slot" style="width:100%; max-width:728px; margin-bottom:40px;">
+      <!-- [PASTE YOUR BOTTOM HORIZONTAL ADS SCRIPT HERE LATER] -->
+      <span style="font-family:'Share Tech Mono'; color:rgba(34,197,94,0.4); font-size:0.8rem;">BOTTOM HORIZONTAL AD MODULE PLACEHOLDER</span>
+  </div>
+</div>
+
+<script>
+  // === CONFIGURATION ===
+  const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL_HERE";
+  const SUPABASE_KEY = "YOUR_SUPABASE_PUBLIC_ANON_KEY_HERE";
+  // =====================
+
+  const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  let targetLink = "https://google.com"; // Fallback Link
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const routeId = urlParams.get('id');
+
+  async function fetchTargetLink() {
+    if(routeId) {
+      try {
+        let { data, error } = await _supabase
+          .from('modthirst_links')
+          .select('title, dest')
+          .eq('id', routeId)
+          .single();
+
+        if (data && !error) {
+          targetLink = data.dest;
+          document.getElementById('dynamicTitleBadge').textContent = "Target Payload Linked: " + data.title;
+        } else {
+          document.getElementById('dynamicTitleBadge').textContent = "System Mode: Standard Analysis Context Archive";
         }
-        fetchDestinationLink();
+      } catch (err) {
+        document.getElementById('dynamicTitleBadge').textContent = "System Mode: Archive View (Offline)";
+      }
+    } else {
+      document.getElementById('dynamicTitleBadge').textContent = "System Mode: Standard Analysis Context Archive";
+    }
+  }
 
-        // DOM Elements
-        const step1Btn = document.getElementById('step1Btn');
-        const timer1Container = document.getElementById('timer1Container');
-        const countdown1 = document.getElementById('countdown1');
-        const downloadNowBtn = document.getElementById('downloadNowBtn');
-        const finalLinkSection = document.getElementById('finalLinkSection');
-        const step3Btn = document.getElementById('step3Btn');
-        const timer2Container = document.getElementById('timer2Container');
-        const countdown2 = document.getElementById('countdown2');
-        const finalDestinationLink = document.getElementById('finalDestinationLink');
+  fetchTargetLink();
 
-        // Step 1 Click: Start 20s Timer
-        step1Btn.addEventListener('click', () => {
-            step1Btn.classList.add('hidden');
-            timer1Container.classList.remove('hidden');
-            downloadNowBtn.classList.remove('hidden');
-            
-            let timeLeft = 20;
-            let timer = setInterval(() => {
-                timeLeft--;
-                countdown1.innerText = timeLeft;
-                if(timeLeft <= 0) {
-                    clearInterval(timer);
-                    downloadNowBtn.removeAttribute('disabled');
-                    downloadNowBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                }
-            }, 1000);
-        });
+  function startTopTimer() {
+    document.getElementById('getMasterBtn').style.display = 'none';
+    document.getElementById('topTimerDisplay').style.display = 'block';
+    
+    let timeRemaining = 20; // 20 Seconds Wait Time Rule
+    const clock = document.getElementById('topClock');
+    
+    const interval = setInterval(() => {
+      timeRemaining--;
+      clock.textContent = timeRemaining;
+      if(timeRemaining <= 0) {
+        clearInterval(interval);
+        document.getElementById('topTimerDisplay').style.display = 'none';
+        document.getElementById('downloadNowBtn').style.display = 'inline-block';
+      }
+    }, 1000);
+  }
 
-        // Step 2 Click: Slow Auto-Scroll down
-        downloadNowBtn.addEventListener('click', () => {
-            finalLinkSection.classList.remove('hidden');
-            
-            // Smooth slow scroll down to the bottom
-            let currentPosition = window.scrollY;
-            let targetPosition = document.body.scrollHeight;
-            let speed = 5; // Adjust speed here
+  function triggerSlowScroll() {
+    const footer = document.getElementById('footerTerminal');
+    
+    if(!document.getElementById('secureTerminalBox')) {
+      const secureBoxHTML = `
+        <div class="system-box" id="secureTerminalBox" style="width:100%; max-width:550px; margin-top:20px;">
+          <h3 style="font-family:'Orbitron'; color:#fff; margin-bottom:12px;">Data Destination Terminal</h3>
+          <p class="timer-label" id="bottomStatus" style="color:var(--text);">Scroll confirmation recorded. Ready to process final dynamic path handshake.</p>
+          <button class="trigger-btn" id="getLinkFinalBtn" onclick="startBottomTimer()">Get Link</button>
+          <div id="bottomTimerDisplay" style="display:none;">
+            <p class="timer-label">Constructing encrypted destination cloud tunnels...</p>
+            <span class="counter" id="bottomClock">15</span>
+          </div>
+        </div>
+      `;
+      footer.insertAdjacentHTML('beforeend', secureBoxHTML);
+    }
+    
+    document.getElementById('downloadNowBtn').textContent = "Scrolling Assets...";
+    document.getElementById('downloadNowBtn').style.background = "#15803d";
+    
+    const destination = footer.offsetTop;
+    const startingPoint = window.pageYOffset;
+    const distanceToScroll = destination - startingPoint;
+    const scrollDuration = 12000; // Slow, progressive auto scroll speed tracking rule
+    let startTime = null;
 
-            function smoothScroll() {
-                if (currentPosition < targetPosition) {
-                    currentPosition += speed;
-                    window.scrollTo(0, currentPosition);
-                    requestAnimationFrame(smoothScroll);
-                }
-            }
-            smoothScroll();
-        });
+    function scrollAnimation(timestamp) {
+      if (!startTime) startTime = timestamp;
+      const timeElapsed = timestamp - startTime;
+      const currentProgress = Math.min(timeElapsed / scrollDuration, 1);
+      
+      const easePosition = currentProgress < 0.5 
+        ? 2 * currentProgress * currentProgress 
+        : -1 + (4 - 2 * currentProgress) * currentProgress;
 
-        // Step 3 Click: Start Final 15s Timer
-        step3Btn.addEventListener('click', () => {
-            step3Btn.classList.add('hidden');
-            timer2Container.classList.remove('hidden');
+      window.scrollTo(0, startingPoint + (distanceToScroll * easePosition));
+      
+      if (timeElapsed < scrollDuration) {
+        window.requestAnimationFrame(scrollAnimation);
+      } else {
+        document.getElementById('downloadNowBtn').textContent = "Arrived Safely";
+      }
+    }
+    window.requestAnimationFrame(scrollAnimation);
+  }
 
-            let timeLeft = 15;
-            let timer = setInterval(() => {
-                timeLeft--;
-                countdown2.innerText = timeLeft;
-                if(timeLeft <= 0) {
-                    clearInterval(timer);
-                    timer2Container.innerHTML = "<p class='text-emerald-400 font-bold'>Link Generated Successfully!</p>";
-                    finalDestinationLink.href = destinationUrl;
-                    finalDestinationLink.classList.remove('hidden');
-                }
-            }, 1000);
-        });
-    </script>
+  function startBottomTimer() {
+    document.getElementById('getLinkFinalBtn').style.display = 'none';
+    document.getElementById('bottomTimerDisplay').style.display = 'block';
+    document.getElementById('bottomStatus').textContent = "Executing final structural redirect mapping...";
+
+    let timeRemaining = 15; // 15 Seconds Final Timer Rule
+    const clock = document.getElementById('bottomClock');
+
+    const interval = setInterval(() => {
+      timeRemaining--;
+      clock.textContent = timeRemaining;
+      if(timeRemaining <= 0) {
+        clearInterval(interval);
+        clock.textContent = "✓ REDIRECTING";
+        clock.style.color = "var(--cyan)";
+        document.getElementById('bottomStatus').textContent = "Handshake success! Launching secure destination portal...";
+        
+        setTimeout(() => {
+          window.location.href = targetLink;
+        }, 1200);
+      }
+    }, 1000);
+  }
+</script>
 </body>
 </html>
