@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>modthirst - Secure Link Shortener</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        /* Custom Green Theme Styles */
+        body { background-color: #052e16; color: #f0fdf4; }
+        .btn-green { background-color: #16a34a; color: white; transition: all 0.3s; }
+        .btn-green:hover { background-color: #15803d; }
+    </style>
+</head>
+<body class="font-sans min-h-screen flex flex-col justify-between">
+
+    <header class="p-5 bg-[#111827] border-b border-[#16a34a] text-center text-2xl font-bold tracking-wider text-[#16a34a]">
+        modthirst
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6 mt-10 bg-[#0f172a] rounded-xl shadow-2xl border border-emerald-900 w-full text-center">
+        <h2 class="text-xl font-semibold mb-4">Your Link is Ready Below</h2>
+        
+        <div class="my-4 p-4 border border-dashed border-gray-600 text-gray-400 text-sm">
+            ADVERTISEMENT
+        </div>
+        <button id="step1Btn" class="btn-green px-8 py-3 rounded-lg font-bold text-lg shadow-lg">
+            Get Link
+        </button>
+
+        <div id="timer1Container" class="hidden mt-6">
+            <p class="text-lg">Please wait <span id="countdown1" class="font-bold text-emerald-400 text-xl">20</span> seconds...</p>
+            <button id="downloadNowBtn" class="btn-green px-8 py-3 rounded-lg font-bold text-lg mt-4 hidden opacity-50 cursor-not-allowed" disabled>
+                Download Now
+            </button>
+        </div>
+
+        <section class="mt-12 text-left bg-[#052e16]/50 p-6 rounded-lg max-h-[400px] overflow-y-auto border border-emerald-800 text-gray-300">
+            <h3 class="text-xl font-bold text-[#16a34a] mb-4">modthirst Premium Resource Hub & Documentation</h3>
+            <p class="mb-4 font-semibold">Welcome to modthirst. Below is the comprehensive guide. Please scroll down to access your final destination link.</p>
+            
+            <p class="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat...</p>
+            <p class="mb-4">Detailed Section 1: In modern web architectures, secure file distribution requires optimized link shortening strategies. This portal ensures that every click is verified, safe from malware, and served efficiently...</p>
+            <p class="mb-4">Detailed Section 2: Building high-retention pages... (Expand this content up to 5000 words for SEO advantages)...</p>
+            <p class="mb-4">Conclusion: Thank you for waiting and supporting modthirst. Your files are checked with integrity algorithms.</p>
+        </section>
+        <div id="finalLinkSection" class="mt-8 pt-6 border-t border-emerald-950 hidden">
+            <button id="step3Btn" class="btn-green px-8 py-3 rounded-lg font-bold text-lg">
+                Get Destination Link
+            </button>
+            
+            <div id="timer2Container" class="hidden mt-4">
+                <p class="text-lg">Generating Final Destination in <span id="countdown2" class="font-bold text-emerald-400 text-xl">15</span> seconds...</p>
+                <a id="finalDestinationLink" href="#" target="_blank" class="btn-green inline-block px-8 py-3 rounded-lg font-bold text-lg mt-4 hidden bg-gradient-to-r from-green-500 to-emerald-600">
+                    Go to Destination Link
+                </a>
+            </div>
+        </div>
+
+        <div class="my-6 p-4 border border-dashed border-gray-600 text-gray-400 text-sm">
+            ADVERTISEMENT
+        </div>
+        </main>
+
+    <footer class="p-4 bg-[#111827] text-center text-sm text-gray-500 mt-10">
+        © 2026 modthirst. All Rights Reserved.
+    </footer>
+
+    <script>
+        // SUPABASE CONFIGURATION PLACEHOLDERS
+        const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL_HERE"; 
+        const SUPABASE_ANON_KEY = "YOUR_SUPABASE_PUBLIC_ANON_KEY_HERE";
+        
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Fetch short code from URL (e.g., modthirst.com/?id=xyz123)
+        const urlParams = new URLSearchParams(window.location.search);
+        const shortId = urlParams.get('id');
+        let destinationUrl = "https://google.com"; // Default fallback
+
+        // Fetch original link from Supabase DB
+        async function fetchDestinationLink() {
+            if(!shortId) return;
+            let { data, error } = await supabase
+                .from('short_links')
+                .select('original_url')
+                .eq('short_id', shortId)
+                .single();
+            
+            if (data && !error) {
+                destinationUrl = data.original_url;
+            }
+        }
+        fetchDestinationLink();
+
+        // DOM Elements
+        const step1Btn = document.getElementById('step1Btn');
+        const timer1Container = document.getElementById('timer1Container');
+        const countdown1 = document.getElementById('countdown1');
+        const downloadNowBtn = document.getElementById('downloadNowBtn');
+        const finalLinkSection = document.getElementById('finalLinkSection');
+        const step3Btn = document.getElementById('step3Btn');
+        const timer2Container = document.getElementById('timer2Container');
+        const countdown2 = document.getElementById('countdown2');
+        const finalDestinationLink = document.getElementById('finalDestinationLink');
+
+        // Step 1 Click: Start 20s Timer
+        step1Btn.addEventListener('click', () => {
+            step1Btn.classList.add('hidden');
+            timer1Container.classList.remove('hidden');
+            downloadNowBtn.classList.remove('hidden');
+            
+            let timeLeft = 20;
+            let timer = setInterval(() => {
+                timeLeft--;
+                countdown1.innerText = timeLeft;
+                if(timeLeft <= 0) {
+                    clearInterval(timer);
+                    downloadNowBtn.removeAttribute('disabled');
+                    downloadNowBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            }, 1000);
+        });
+
+        // Step 2 Click: Slow Auto-Scroll down
+        downloadNowBtn.addEventListener('click', () => {
+            finalLinkSection.classList.remove('hidden');
+            
+            // Smooth slow scroll down to the bottom
+            let currentPosition = window.scrollY;
+            let targetPosition = document.body.scrollHeight;
+            let speed = 5; // Adjust speed here
+
+            function smoothScroll() {
+                if (currentPosition < targetPosition) {
+                    currentPosition += speed;
+                    window.scrollTo(0, currentPosition);
+                    requestAnimationFrame(smoothScroll);
+                }
+            }
+            smoothScroll();
+        });
+
+        // Step 3 Click: Start Final 15s Timer
+        step3Btn.addEventListener('click', () => {
+            step3Btn.classList.add('hidden');
+            timer2Container.classList.remove('hidden');
+
+            let timeLeft = 15;
+            let timer = setInterval(() => {
+                timeLeft--;
+                countdown2.innerText = timeLeft;
+                if(timeLeft <= 0) {
+                    clearInterval(timer);
+                    timer2Container.innerHTML = "<p class='text-emerald-400 font-bold'>Link Generated Successfully!</p>";
+                    finalDestinationLink.href = destinationUrl;
+                    finalDestinationLink.classList.remove('hidden');
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

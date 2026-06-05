@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>modthirst - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { background-color: #052e16; color: #f0fdf4; }
+        .btn-green { background-color: #16a34a; color: white; }
+        .btn-green:hover { background-color: #15803d; }
+    </style>
+</head>
+<body class="font-sans min-h-screen flex flex-col justify-center items-center p-6">
+
+    <div class="max-w-xl w-full bg-[#0f172a] rounded-xl p-8 shadow-2xl border border-emerald-950">
+        <h1 class="text-3xl font-bold text-center text-[#16a34a] mb-2">modthirst Admin</h1>
+        <p class="text-center text-gray-400 text-sm mb-8">Generate Monetized Short Links</p>
+
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-1">Enter Destination URL</label>
+                <input type="url" id="longUrl" placeholder="https://example.com/file.zip" class="w-full p-3 bg-[#1e293b] border border-emerald-800 rounded-lg text-white focus:outline-none focus:border-[#16a34a]">
+            </div>
+            
+            <button id="shortenBtn" class="w-full btn-green p-3 rounded-lg font-bold text-lg shadow-md transition duration-200">
+                Shorten & Save Link
+            </button>
+        </div>
+
+        <div id="resultBox" class="mt-8 p-4 bg-[#052e16] border border-emerald-700 rounded-lg hidden text-center">
+            <p class="text-sm text-gray-300 mb-2">Your Short Link (Share this):</p>
+            <input type="text" id="shortenedUrl" readonly class="w-full p-2 bg-[#1e293b] text-emerald-400 text-center rounded border border-emerald-800 mb-3 font-mono">
+            <button onclick="copyLink()" class="text-xs bg-emerald-800 hover:bg-emerald-700 px-3 py-1.5 rounded text-white font-semibold">Copy Link</button>
+        </div>
+    </div>
+
+    <script>
+        // SUPABASE CONFIGURATION PLACEHOLDERS
+        const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL_HERE"; 
+        const SUPABASE_ANON_KEY = "YOUR_SUPABASE_PUBLIC_ANON_KEY_HERE";
+        
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Function to generate random unique string for short URL
+        function generateShortId(length = 6) {
+            return Math.random().toString(36).substring(2, 2 + length);
+        }
+
+        document.getElementById('shortenBtn').addEventListener('click', async () => {
+            const longUrl = document.getElementById('longUrl').value.trim();
+            if(!longUrl) {
+                alert("Please enter a valid URL");
+                return;
+            }
+
+            const shortId = generateShortId();
+            
+            // Insert into Supabase Table named 'short_links'
+            const { data, error } = await supabase
+                .from('short_links')
+                .insert([
+                    { short_id: shortId, original_url: longUrl }
+                ]);
+
+            if (error) {
+                alert("Error saving to Supabase: " + error.message);
+                console.error(error);
+            } else {
+                // Change 'yourdomain.com' to your actual website domain later
+                const finalShortLink = window.location.origin + "/index.html?id=" + shortId;
+                document.getElementById('shortenedUrl').value = finalShortLink;
+                document.getElementById('resultBox').classList.remove('hidden');
+            }
+        });
+
+        function copyLink() {
+            const copyText = document.getElementById('shortenedUrl');
+            copyText.select();
+            document.execCommand("copy");
+            alert("Short link copied to clipboard!");
+        }
+    </script>
+</body>
+</html>
